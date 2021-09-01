@@ -3,9 +3,9 @@ using System.Globalization;
 
 namespace Datatype
 {
-    class Class
+    class PrinterClass
     {
-        public static void PrintTypes(string input, bool extended)
+        public void PrintTypes(string input, bool extended)
         {
             // change standard decimal seperator to "." instead of ","
             CultureInfo ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();

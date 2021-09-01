@@ -9,6 +9,8 @@ namespace Datatype
             string input = "";
             bool extended = false;
 
+            PrinterClass PrinterObject = new PrinterClass();
+
             while (true)
             {
                 Console.Clear();
@@ -21,7 +23,7 @@ namespace Datatype
                 }
 
                 Console.SetCursorPosition(0, 7);
-                Class.PrintTypes(input, extended);
+                PrinterObject.PrintTypes(input, extended);
                 
                 Console.SetCursorPosition(0, 5);
                 Console.Write(">>> ");
