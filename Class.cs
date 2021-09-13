@@ -1,34 +1,94 @@
 ﻿using System;
-using System.Globalization;
 
 namespace Datatype
 {
     class PrinterClass
     {
+        public void Print(bool parsed, bool bestFit, string datatype)
+        {
+            if (bestFit && parsed)
+            {
+                Console.Write("+");
+            } else {
+                Console.Write(" ");
+            }
+            if (parsed)
+            {
+                Console.Write("+ ");
+            } else {
+                Console.Write("- ");
+            }
+            Console.WriteLine(datatype);
+        }
+
+
         public void PrintTypes(string input, bool extended)
         {
-            // change standard decimal seperator to "." instead of ","
-            CultureInfo ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
-            ci.NumberFormat.CurrencyDecimalSeparator = ".";
-
-            try { Int32.Parse(input); Console.WriteLine(" + Integer"); } catch (System.FormatException) { Console.WriteLine(" - Integer"); } catch (System.OverflowException) { Console.WriteLine(" - Integer"); }
-            try { input.ToString(); Console.WriteLine(" + String"); } catch (System.FormatException) { Console.WriteLine(" - String"); }
-            try { bool.Parse(input); Console.WriteLine(" + Boolean"); } catch (System.FormatException) { Console.WriteLine(" - Boolean"); }
-            try { float.Parse(input, NumberStyles.Any, ci); Console.WriteLine(" + Float"); } catch (System.FormatException) { Console.WriteLine(" - Float"); } catch (System.OverflowException) { Console.WriteLine(" - Float"); }
+            bool success;
+            bool foundBestFit = false;
 
             if (extended)
             {
-                try { char.Parse(input); Console.WriteLine(" + Character"); } catch (System.FormatException) { Console.WriteLine(" - Character"); }
-                try { double.Parse(input, NumberStyles.Any, ci); Console.WriteLine(" + Double"); } catch (System.FormatException) { Console.WriteLine(" - Double"); } catch (System.OverflowException) { Console.WriteLine(" - Double"); }
-                try { decimal.Parse(input, NumberStyles.Any, ci); Console.WriteLine(" + Decimal"); } catch (System.FormatException) { Console.WriteLine(" - Decimal"); } catch (System.OverflowException) { Console.WriteLine(" - Decimal"); }
-                try { Int64.Parse(input); Console.WriteLine(" + Long"); } catch (System.FormatException) { Console.WriteLine(" - Long"); } catch (System.OverflowException) { Console.WriteLine(" - Long"); }
-                try { Int16.Parse(input); Console.WriteLine(" + Short"); } catch (System.FormatException) { Console.WriteLine(" - Short"); } catch (System.OverflowException) { Console.WriteLine(" - Short"); }
-                try { UInt32.Parse(input); Console.WriteLine(" + Unsigned Integer"); } catch (System.FormatException) { Console.WriteLine(" - Unsigned Integer"); } catch (System.OverflowException) { Console.WriteLine(" - Unsigned Integer"); }
-                try { UInt64.Parse(input); Console.WriteLine(" + Unsigned Long"); } catch (System.FormatException) { Console.WriteLine(" - Unsigned Long"); } catch (System.OverflowException) { Console.WriteLine(" - Unsigned Long"); }
-                try { UInt16.Parse(input); Console.WriteLine(" + Unsigned Short"); } catch (System.FormatException) { Console.WriteLine(" - Unsigned Short"); } catch (System.OverflowException) { Console.WriteLine(" - Unsigned Short"); }
-                try { byte.Parse(input); Console.WriteLine(" + Unsigned Byte"); } catch (System.FormatException) { Console.WriteLine(" - Unsigned Byte"); } catch (System.OverflowException) { Console.WriteLine(" - Unsigned Byte"); }
-                try { SByte.Parse(input); Console.WriteLine(" + Signed Byte"); } catch (System.FormatException) { Console.WriteLine(" - Signed Byte"); } catch (System.OverflowException) { Console.WriteLine(" - Signed Byte"); }
+                success = byte.TryParse(input, out _);
+                Print(success, !foundBestFit, "Unsigned Byte");
+                if (success) { foundBestFit = true; }
+
+                success = SByte.TryParse(input, out _);
+                Print(success, !foundBestFit, "Signed Byte");
+                if (success) { foundBestFit = true; }
+
+                success = UInt16.TryParse(input, out _);
+                Print(success, !foundBestFit, "Unsigned Short");
+                if (success) { foundBestFit = true; }
+
+                success = Int16.TryParse(input, out _);
+                Print(success, !foundBestFit, "Short");
+                if (success) { foundBestFit = true; }
+
+                success = UInt32.TryParse(input, out _);
+                Print(success, !foundBestFit, "Unsigned Integer");
+                if (success) { foundBestFit = true; }
             }
+
+            success = Int32.TryParse(input, out _);
+            Print(success, !foundBestFit, "Integer");
+            if (success) { foundBestFit = true; }
+
+            if (extended)
+            {
+                success = UInt64.TryParse(input, out _);
+                Print(success, !foundBestFit, "Unsigned Long");
+                if (success) { foundBestFit = true; }
+
+                success = Int64.TryParse(input, out _);
+                Print(success, !foundBestFit, "Long");
+                if (success) { foundBestFit = true; }
+            }
+
+            success = float.TryParse(input.Replace(".", ","), out _);
+            Print(success, !foundBestFit, "Float");
+            if (success) { foundBestFit = true; }
+
+            if (extended)
+            {
+                success = double.TryParse(input.Replace(".", ","), out _);
+                Print(success, !foundBestFit, "Double");
+                if (success) { foundBestFit = true; }
+
+                success = decimal.TryParse(input.Replace(".", ","), out _);
+                Print(success, !foundBestFit, "Decimal");
+                if (success) { foundBestFit = true; }
+
+                success = char.TryParse(input, out _);
+                Print(success, !foundBestFit, "Character");
+                if (success) { foundBestFit = true; }
+            }
+
+            success = bool.TryParse(input, out _);
+            Print(success, !foundBestFit, "Boolean");
+            if (success) { foundBestFit = true; }
+
+            Print(true, !foundBestFit, "String");
         }
     }
 }
